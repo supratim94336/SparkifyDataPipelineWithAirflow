@@ -9,8 +9,9 @@ def greet():
     logging.info("Hello World!")
 
 
-dag = DAG('lesson1.demo1', start_date=datetime.datetime.now(), catchup=False)
-
+dag = DAG('lesson1.demo1',
+          start_date=datetime.datetime.now(),
+          catchup=False)
 #
 # create dag
 #
