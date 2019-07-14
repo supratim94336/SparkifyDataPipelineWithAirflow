@@ -5,6 +5,12 @@
 # be writing SQL -- all of the SQL statements we run against Redshift
 # are predefined and included in your lesson.
 
+"""
+Pre-requisites:
+from README
+setup AWS credentials
+setup redshift
+"""
 import datetime
 from airflow import DAG
 from airflow.contrib.hooks.aws_hook import AwsHook

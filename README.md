@@ -52,15 +52,26 @@ fernet_key = ************
 
 #### Setting up connections and variables in Airflow UI
 TODO: There is no code to modify in this exercise. We're going to 
-create a connection and a variable.
+create a connection and a variable.  
+
+S3
 1. Open your browser to localhost:8080 and open Admin->Variables
 2. Click "Create"
 3. Set "Key" equal to "s3_bucket" and set "Val" equal to "udacity-dend"
 4. Set "Key" equal to "s3_prefix" and set "Val" equal to "data-pipelines"
+5. Click save  
+
+AWS  
+1. Open Admin->Connections
+2. Click "Create"
+3. Set "Conn Id" to "aws_credentials", "Conn Type" to "Amazon Web Services"
+4. Set "Login" to your aws_access_key_id and "Password" to your aws_secret_key
 5. Click save
-6. Open Admin->Connections
-7. Click "Create"
-8. Set "Conn Id" to "aws_credentials", "Conn Type" to "Amazon Web Services"
-9. Set "Login" to your aws_access_key_id and "Password" to your aws_secret_key
-10. Click save
-11. Run the DAG
+
+Redshift
+1. Open Admin->Connections
+2. Click "Create"
+3. Set "Conn Id" to "redshift", "Conn Type" to "postgres"
+4. Set "Login" to your master_username for your cluster and "Password" 
+to your master_password for your cluster
+5. Click save
