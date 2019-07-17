@@ -43,7 +43,7 @@ $ airflow list_dags
 ```
 
 #### Secure/Encrypt your connections and hooks
-Run
+**Run**
 ```bash
 $ python cryptosetup.py
 ```
@@ -54,24 +54,31 @@ fernet_key = ************
 TODO: There is no code to modify in this exercise. We're going to 
 create a connection and a variable.  
 
-S3
+**S3**
 1. Open your browser to localhost:8080 and open Admin->Variables
 2. Click "Create"
 3. Set "Key" equal to "s3_bucket" and set "Val" equal to "udacity-dend"
 4. Set "Key" equal to "s3_prefix" and set "Val" equal to "data-pipelines"
 5. Click save  
 
-AWS  
+**AWS**
 1. Open Admin->Connections
 2. Click "Create"
 3. Set "Conn Id" to "aws_credentials", "Conn Type" to "Amazon Web Services"
 4. Set "Login" to your aws_access_key_id and "Password" to your aws_secret_key
 5. Click save
 
-Redshift
+**Redshift**
 1. Open Admin->Connections
 2. Click "Create"
 3. Set "Conn Id" to "redshift", "Conn Type" to "postgres"
 4. Set "Login" to your master_username for your cluster and "Password" 
 to your master_password for your cluster
 5. Click save
+
+#### Links for Airflow
+**Macro**  
+https://airflow.apache.org/macros.html
+
+**Hacks**  
+https://medium.com/datareply/airflow-lesser-known-tips-tricks-and-best-practises-cf4d4a90f8f
