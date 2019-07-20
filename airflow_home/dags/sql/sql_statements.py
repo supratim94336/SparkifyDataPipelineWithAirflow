@@ -102,7 +102,7 @@ INSERT INTO station_traffic
             from_station_id,
             COUNT(from_station_id) AS num_departures
         FROM trips
-        --WHERE TRUNC(end_time) < {} and TRUNC(start_time) > {}
+        -- WHERE TRUNC(end_time) > {} and TRUNC(start_time) < {}
         GROUP BY from_station_id
     ) AS fs ON t.from_station_id = fs.from_station_id
     JOIN (
@@ -110,7 +110,7 @@ INSERT INTO station_traffic
             to_station_id,
             COUNT(to_station_id) AS num_arrivals
         FROM trips
-        --WHERE TRUNC(end_time) < {} and TRUNC(start_time) > {}
+        -- WHERE TRUNC(end_time) > {} and TRUNC(start_time) < {}
         GROUP BY to_station_id
     ) AS ts ON t.from_station_id = ts.to_station_id
     )
