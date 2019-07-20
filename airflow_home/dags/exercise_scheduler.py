@@ -18,8 +18,8 @@ def list_keys():
 
 
 dag = DAG(
-        'lesson1.exercise4',
-        start_date=datetime.datetime.now())
+    'lesson1.exercise4',
+    start_date=datetime.datetime.now())
 
 list_task = PythonOperator(
     task_id="list_keys",

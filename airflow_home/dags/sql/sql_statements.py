@@ -29,6 +29,16 @@ PRIMARY KEY(id))
 DISTSTYLE ALL;
 """
 
+CREATE_TRAFFIC_TABLE_SQL = """
+CREATE TABLE IF NOT EXISTS station_traffic (
+from_station_id INTEGER NOT NULL,
+from_station_name VARCHAR(250) NOT NULL,
+num_departures INTEGER NOT NULL,
+num_arrivals INTEGER NOT NULL)
+DISTSTYLE ALL;
+"""
+
+
 COPY_SQL = """
 COPY {}
 FROM '{}'
@@ -77,4 +87,31 @@ JOIN (
     FROM trips
     GROUP BY to_station_id
 ) AS ts ON t.from_station_id = ts.to_station_id
+"""
+
+TRAFFIC_INSERTION_SQL = """
+INSERT INTO station_traffic
+(SELECT
+    DISTINCT(t.from_station_id) AS station_id,
+    t.from_station_name AS station_name,
+    num_departures,
+    num_arrivals
+    FROM trips t
+    JOIN (
+        SELECT
+            from_station_id,
+            COUNT(from_station_id) AS num_departures
+        FROM trips
+        --WHERE TRUNC(end_time) < {} and TRUNC(start_time) > {}
+        GROUP BY from_station_id
+    ) AS fs ON t.from_station_id = fs.from_station_id
+    JOIN (
+        SELECT
+            to_station_id,
+            COUNT(to_station_id) AS num_arrivals
+        FROM trips
+        --WHERE TRUNC(end_time) < {} and TRUNC(start_time) > {}
+        GROUP BY to_station_id
+    ) AS ts ON t.from_station_id = ts.to_station_id
+    )
 """
