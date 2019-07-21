@@ -17,14 +17,25 @@ from airflow.contrib.hooks.aws_hook import AwsHook
 from airflow.hooks.postgres_hook import PostgresHook
 from airflow.operators.postgres_operator import PostgresOperator
 from airflow.operators.python_operator import PythonOperator
-from .sql import sql_statements
+from sql import sql_statements
 
 
-def load_data_to_redshift(*args, **kwargs):
+def load_trips_data_to_redshift(*args, **kwargs):
     aws_hook = AwsHook("aws_credentials")
     credentials = aws_hook.get_credentials()
     redshift_hook = PostgresHook("redshift")
     redshift_hook.run(sql_statements.COPY_ALL_TRIPS_SQL.format(credentials.access_key, credentials.secret_key))
+
+
+def load_station_data_to_redshift(*args, **kwargs):
+    aws_hook = AwsHook("aws_credentials")
+    credentials = aws_hook.get_credentials()
+    redshift_hook = PostgresHook("redshift")
+    sql_stmt = sql_statements.COPY_STATIONS_SQL.format(
+        credentials.access_key,
+        credentials.secret_key,
+    )
+    redshift_hook.run(sql_stmt)
 
 
 dag = DAG(
@@ -32,17 +43,30 @@ dag = DAG(
     start_date=datetime.datetime.now()
 )
 
-create_table = PostgresOperator(
-    task_id="create_table",
+create_trips_table = PostgresOperator(
+    task_id="create_trips_table",
     dag=dag,
     postgres_conn_id="redshift",
     sql=sql_statements.CREATE_TRIPS_TABLE_SQL
 )
 
-copy_task = PythonOperator(
-    task_id='load_from_s3_to_redshift',
+copy_trips_task = PythonOperator(
+    task_id='load_trips_from_s3_to_redshift',
     dag=dag,
-    python_callable=load_data_to_redshift
+    python_callable=load_trips_data_to_redshift
+)
+
+create_stations_table = PostgresOperator(
+    task_id="create_stations_table",
+    dag=dag,
+    postgres_conn_id="redshift",
+    sql=sql_statements.CREATE_STATIONS_TABLE_SQL,
+)
+
+copy_stations_task = PythonOperator(
+    task_id='load_stations_from_s3_to_redshift',
+    dag=dag,
+    python_callable=load_station_data_to_redshift,
 )
 
 location_traffic_task = PostgresOperator(
@@ -52,5 +76,7 @@ location_traffic_task = PostgresOperator(
     sql=sql_statements.LOCATION_TRAFFIC_SQL
 )
 
-create_table >> copy_task
-copy_task >> location_traffic_task
+create_trips_table >> copy_trips_task
+create_stations_table >> copy_stations_task
+copy_trips_task >> location_traffic_task
+copy_stations_task >> location_traffic_task

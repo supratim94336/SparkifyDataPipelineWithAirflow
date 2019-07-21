@@ -9,7 +9,7 @@ from airflow.contrib.hooks.aws_hook import AwsHook
 from airflow.hooks.postgres_hook import PostgresHook
 from airflow.operators.postgres_operator import PostgresOperator
 from airflow.operators.python_operator import PythonOperator
-from .sql import sql_statements
+from sql import sql_statements
 
 
 # task 1: load trip data to redshift
