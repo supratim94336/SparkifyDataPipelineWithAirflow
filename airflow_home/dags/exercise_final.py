@@ -24,7 +24,7 @@ copy_trips_task = S3ToRedshiftOperator(
     dag=dag,
     table="trips",
     redshift_conn_id="redshift",
-    aws_credentials_id="aws_credentials",
+    aws_credentials="aws_credentials",
     s3_bucket="udacity-dend",
     s3_key="data-pipelines/divvy/unpartitioned/divvy_trips_2018.csv"
 )
