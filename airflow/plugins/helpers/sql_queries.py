@@ -1,7 +1,8 @@
 class SqlQueries:
     songplay_table_insert = ("""
-        SELECT
-                md5(events.sessionid || events.start_time) songplay_id,
+    DROP TABLE IF EXISTS {};
+    CREATE TABLE {} AS
+        SELECT  md5(events.sessionid || events.start_time) songplay_id,
                 events.start_time, 
                 events.userid, 
                 events.level, 
@@ -20,41 +21,66 @@ class SqlQueries:
     """)
 
     user_table_insert = ("""
-        SELECT distinct userid, firstname, lastname, gender, level
+    DROP TABLE IF EXISTS {};
+    CREATE TABLE {} AS
+        SELECT distinct userid, 
+               firstname, 
+               lastname, 
+               gender, 
+               level
         FROM staging_events
         WHERE page='NextSong'
     """)
 
     song_table_insert = ("""
-        SELECT distinct song_id, title, artist_id, year, duration
+    DROP TABLE IF EXISTS {};
+    CREATE TABLE {} AS
+        SELECT distinct song_id,
+               title, 
+               artist_id, 
+               year, 
+               duration
         FROM staging_songs
     """)
 
     artist_table_insert = ("""
-        SELECT distinct artist_id, artist_name, artist_location, artist_latitude, artist_longitude
+    DROP TABLE IF EXISTS {};
+    CREATE TABLE {} AS
+        SELECT distinct artist_id, 
+               artist_name, 
+               artist_location, 
+               artist_latitude, 
+               artist_longitude
         FROM staging_songs
     """)
 
     time_table_insert = ("""
-        SELECT start_time, extract(hour from start_time), extract(day from start_time), extract(week from start_time), 
-               extract(month from start_time), extract(year from start_time), extract(dayofweek from start_time)
+    DROP TABLE IF EXISTS {};
+    CREATE TABLE {} AS
+        SELECT start_time, 
+               extract(hour from start_time), 
+               extract(day from start_time), 
+               extract(week from start_time), 
+               extract(month from start_time), 
+               extract(year from start_time), 
+               extract(dayofweek from start_time)
         FROM songplays
     """)
     song_copy_command = """
-        COPY {}
-        FROM '{}' 
-        ACCESS_KEY_ID '{{}}'
-        SECRET_ACCESS_KEY '{{}}'
-        region 'us-west-2'
-        JSON '{}'
-        timeformat 'epochmillisecs';
-    """
+                        COPY {}
+                        FROM '{}' 
+                        ACCESS_KEY_ID '{{}}'
+                        SECRET_ACCESS_KEY '{{}}'
+                        region 'us-west-2'
+                        JSON '{}'
+                        timeformat 'epochmillisecs';
+                        """
     log_copy_command = """
-                   COPY {} 
-                   FROM '{}' 
-                   ACCESS_KEY_ID '{{}}'
-                   SECRET_ACCESS_KEY '{{}}' 
-                   region 'us-west-2' 
-                   FORMAT AS JSON '{}' 
-                   timeformat 'epochmillisecs'
-                   """
+                       COPY {} 
+                       FROM '{}' 
+                       ACCESS_KEY_ID '{{}}'
+                       SECRET_ACCESS_KEY '{{}}' 
+                       region 'us-west-2' 
+                       FORMAT AS JSON '{}' 
+                       timeformat 'epochmillisecs'
+                       """
