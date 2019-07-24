@@ -1,5 +1,5 @@
 class SqlQueries:
-    songplay_table_insert = ("""
+    songplay_table_insert = """
     DROP TABLE IF EXISTS {};
     CREATE TABLE {} AS
         SELECT  md5(events.sessionid || events.start_time) songplay_id,
@@ -12,15 +12,14 @@ class SqlQueries:
                 events.location, 
                 events.useragent
                 FROM (SELECT TIMESTAMP 'epoch' + ts/1000 * interval '1 second' AS start_time, *
-            FROM staging_events
-            WHERE page='NextSong') events
-            LEFT JOIN staging_songs songs
-            ON events.song = songs.title
-                AND events.artist = songs.artist_name
-                AND events.length = songs.duration
-    """)
+                        FROM staging_events
+                        WHERE page='NextSong') events
+        LEFT JOIN staging_songs songs ON events.song = songs.title
+            AND events.artist = songs.artist_name
+            AND events.length = songs.duration
+    """
 
-    user_table_insert = ("""
+    user_table_insert = """
     DROP TABLE IF EXISTS {};
     CREATE TABLE {} AS
         SELECT distinct userid, 
@@ -30,9 +29,9 @@ class SqlQueries:
                level
         FROM staging_events
         WHERE page='NextSong'
-    """)
+    """
 
-    song_table_insert = ("""
+    song_table_insert = """
     DROP TABLE IF EXISTS {};
     CREATE TABLE {} AS
         SELECT distinct song_id,
@@ -41,9 +40,9 @@ class SqlQueries:
                year, 
                duration
         FROM staging_songs
-    """)
+    """
 
-    artist_table_insert = ("""
+    artist_table_insert = """
     DROP TABLE IF EXISTS {};
     CREATE TABLE {} AS
         SELECT distinct artist_id, 
@@ -52,9 +51,9 @@ class SqlQueries:
                artist_latitude, 
                artist_longitude
         FROM staging_songs
-    """)
+    """
 
-    time_table_insert = ("""
+    time_table_insert = """
     DROP TABLE IF EXISTS {};
     CREATE TABLE {} AS
         SELECT start_time, 
@@ -65,7 +64,7 @@ class SqlQueries:
                extract(year from start_time), 
                extract(dayofweek from start_time)
         FROM songplays
-    """)
+    """
     song_copy_command = """
                         COPY {}
                         FROM '{}' 

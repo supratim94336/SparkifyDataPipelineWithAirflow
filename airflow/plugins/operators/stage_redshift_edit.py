@@ -19,13 +19,13 @@ class StageToRedshiftOperator(BaseOperator):
                  *args, **kwargs):
 
         super(StageToRedshiftOperator, self).__init__(*args, **kwargs)
-        self.redshift_conn_id=redshift_conn_id,
-        self.aws_credentials_id=aws_credentials_id,
-        self.table=table,
-        self.s3_bucket=s3_bucket,
-        self.s3_key=s3_key,
-        self.sql_stmt=sql_stmt,
-        self.json_format=json_format
+        self.redshift_conn_id = redshift_conn_id,
+        self.aws_credentials_id = aws_credentials_id,
+        self.table = table,
+        self.s3_bucket = s3_bucket,
+        self.s3_key = s3_key,
+        self.sql_stmt = sql_stmt,
+        self.json_format = json_format
 
     def execute(self, context):
         self.log.info('StageToRedshiftOperator not implemented yet')
