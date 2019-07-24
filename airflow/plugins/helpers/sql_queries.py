@@ -1,10 +1,9 @@
 class SqlQueries:
-    songplay_table_insert = """
-    DROP TABLE IF EXISTS {};
-    CREATE TABLE {} AS
-        SELECT  md5(events.sessionid || events.start_time) songplay_id,
+    """Store SQL statements for DAG"""
+    songplay_table_insert = ("""
+        SELECT  md5(song_id || CAST(events.start_time as VARCHAR) || nvl(CAST(events.userid as VARCHAR), '-9999')) as songplay_id,
                 events.start_time, 
-                events.userid, 
+                nvl(events.userid, -9999), 
                 events.level, 
                 songs.song_id, 
                 songs.artist_id, 
@@ -12,59 +11,42 @@ class SqlQueries:
                 events.location, 
                 events.useragent
                 FROM (SELECT TIMESTAMP 'epoch' + ts/1000 * interval '1 second' AS start_time, *
-                        FROM staging_events
-                        WHERE page='NextSong') events
-        LEFT JOIN staging_songs songs ON events.song = songs.title
-            AND events.artist = songs.artist_name
-            AND events.length = songs.duration
-    """
+            FROM staging_events
+            WHERE page='NextSong'
+                ) events
+            LEFT JOIN staging_songs songs
+            ON events.song = songs.title
+                AND events.artist = songs.artist_name
+                AND events.length = songs.duration
+            WHERE events.start_time IS NOT NULL 
+                AND song_id IS NOT NULL
+    """)
 
-    user_table_insert = """
-    DROP TABLE IF EXISTS {};
-    CREATE TABLE {} AS
-        SELECT distinct userid, 
-               firstname, 
-               lastname, 
-               gender, 
-               level
+    user_table_insert = ("""
+        SELECT distinct userid, firstname, lastname, gender, level
         FROM staging_events
         WHERE page='NextSong'
-    """
+            AND userid IS NOT NULL
+    """)
 
-    song_table_insert = """
-    DROP TABLE IF EXISTS {};
-    CREATE TABLE {} AS
-        SELECT distinct song_id,
-               title, 
-               artist_id, 
-               year, 
-               duration
+    song_table_insert = ("""
+        SELECT distinct song_id, title, artist_id, year, duration
         FROM staging_songs
-    """
+        WHERE song_id IS NOT NULL
+    """)
 
-    artist_table_insert = """
-    DROP TABLE IF EXISTS {};
-    CREATE TABLE {} AS
-        SELECT distinct artist_id, 
-               artist_name, 
-               artist_location, 
-               artist_latitude, 
-               artist_longitude
+    artist_table_insert = ("""
+        SELECT distinct artist_id, artist_name, artist_location, artist_latitude, artist_longitude
         FROM staging_songs
-    """
+        WHERE artist_id IS NOT NULL
+    """)
 
-    time_table_insert = """
-    DROP TABLE IF EXISTS {};
-    CREATE TABLE {} AS
-        SELECT start_time, 
-               extract(hour from start_time), 
-               extract(day from start_time), 
-               extract(week from start_time), 
-               extract(month from start_time), 
-               extract(year from start_time), 
-               extract(dayofweek from start_time)
+    time_table_insert = ("""
+        SELECT start_time, extract(hour from start_time), extract(day from start_time), extract(week from start_time), 
+               extract(month from start_time), extract(year from start_time), extract(dayofweek from start_time)
         FROM songplays
-    """
+        WHERE start_time IS NOT NULL
+    """)
     song_copy_command = """
                         COPY {}
                         FROM '{}' 
@@ -83,3 +65,4 @@ class SqlQueries:
                        FORMAT AS JSON '{}' 
                        timeformat 'epochmillisecs'
                        """
+

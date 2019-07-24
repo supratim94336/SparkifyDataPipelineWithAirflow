@@ -1,6 +1,15 @@
 ## Data Pipelines with Airflow
-Getting started with airflow
+Getting started with airflow  
+```
 
+ ____/   |__( )_________  __/__  /_________     __
+____  /| |_  /__  ___/_  /_ __  /_  __ \_ | /| / /
+___  ___ |  / _  /   _  __/ _  / / /_/ /_ |/ |/ /
+ _/_/  |_/_/  /_/    /_/    /_/  \____/____/|__/  
+
+```
+
+ 
 ### Installing and starting
 
 #### Installing Python Dependencies

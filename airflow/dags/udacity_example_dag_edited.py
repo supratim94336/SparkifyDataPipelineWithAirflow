@@ -3,11 +3,10 @@ import os
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators import (StageToRedshiftOperator
-                               ,LoadFactOperator,
+                               ,LoadFactOperator
                                ,LoadDimensionOperator
                                ,DataQualityOperator)
 from helpers import SqlQueries
-
 AWS_KEY = os.environ.get('AWS_KEY')
 AWS_SECRET = os.environ.get('AWS_SECRET')
 
@@ -28,7 +27,7 @@ dag = DAG('udac_example_dag',
           default_args=default_args,
           description='Load and transform data in Redshift with Airflow',
           schedule_interval='@hourly'
-        )
+         )
 
 # dummy for node 0
 start_operator = DummyOperator(task_id='Begin_execution',  dag=dag)
@@ -37,10 +36,11 @@ stage_events_to_redshift = StageToRedshiftOperator(
     task_id='Stage_events',
     dag=dag,
     redshift_conn_id="redshift",
-    aws_credentials="aws_credentials",
+    aws_credentials_id="aws_credentials",
     table="staging_events",
     s3_bucket="udacity-dend",
     s3_key="log_data",
+    create_sql=create_queries.log_table_create,
     sql_stmt=SqlQueries.log_copy_command,
     provide_context=True,
     json_format="s3://udacity-dend/log_json_path.json"
@@ -50,10 +50,11 @@ stage_songs_to_redshift = StageToRedshiftOperator(
     task_id='Stage_songs',
     dag=dag,
     redshift_conn_id="redshift",
-    aws_credentials="aws_credentials",
-    table="songs",
+    aws_credentials_id="aws_credentials",
+    table="staging_songs",
     s3_bucket="udacity-dend",
     s3_key="song_data",
+    create_sql=create_queries.song_table_create,
     sql_stmt=SqlQueries.song_copy_command,
     json_format="auto"
 )
@@ -107,14 +108,14 @@ end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
 
 start_operator >> stage_events_to_redshift
 start_operator >> stage_songs_to_redshift
-stage_events_to_redshift >> load_songplays_table
-stage_songs_to_redshift >> load_songplays_table
-load_songplays_table >> load_song_dimension_table
-load_songplays_table >> load_user_dimension_table
-load_songplays_table >> load_artist_dimension_table
-load_songplays_table >> load_time_dimension_table
-load_song_dimension_table >> run_quality_checks
-load_user_dimension_table >> run_quality_checks
-load_artist_dimension_table >> run_quality_checks
-load_time_dimension_table >> run_quality_checks
-run_quality_checks >> end_operator
+# stage_events_to_redshift >> load_songplays_table
+# stage_songs_to_redshift >> load_songplays_table
+# load_songplays_table >> load_song_dimension_table
+# load_songplays_table >> load_user_dimension_table
+# load_songplays_table >> load_artist_dimension_table
+# load_songplays_table >> load_time_dimension_table
+# load_song_dimension_table >> run_quality_checks
+# load_user_dimension_table >> run_quality_checks
+# load_artist_dimension_table >> run_quality_checks
+# load_time_dimension_table >> run_quality_checks
+# run_quality_checks >> end_operator

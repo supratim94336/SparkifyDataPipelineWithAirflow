@@ -22,5 +22,5 @@ class LoadDimensionOperator(BaseOperator):
         self.log.info(f""" Creating Postgres hook """)
         redshift = PostgresHook(postgress_conn_id=self.redshift_conn_id)
         self.log.info(f""" Loading Data into table {self.table} """)
-        formatted_sql = self.sql_stmt.format(self.table, self.table)
+        formatted_sql = self.sql_stmt.format(self.table)
         redshift.run(formatted_sql)

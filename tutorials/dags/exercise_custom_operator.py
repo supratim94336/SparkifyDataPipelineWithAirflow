@@ -13,7 +13,7 @@ from airflow import DAG
 from airflow.hooks.postgres_hook import PostgresHook
 from airflow.operators.postgres_operator import PostgresOperator
 
-from airflow_home.plugins.operators import (
+from tutorials.plugins.operators import (
     HasRowsOperator,
     S3ToRedshiftOperator,
 )

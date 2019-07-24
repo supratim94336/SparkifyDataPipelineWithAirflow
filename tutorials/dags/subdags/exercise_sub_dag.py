@@ -1,7 +1,7 @@
 from airflow import DAG
 from airflow.operators.postgres_operator import PostgresOperator
-from airflow_home.plugins.operators.has_rows import HasRowsOperator
-from airflow_home.plugins.operators.s3_to_redshift import S3ToRedshiftOperator
+from tutorials.plugins.operators.has_rows import HasRowsOperator
+from tutorials.plugins.operators.s3_to_redshift import S3ToRedshiftOperator
 
 
 # Returns a DAG which creates a table if it does not exist, and then

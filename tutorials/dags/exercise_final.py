@@ -1,6 +1,6 @@
 import datetime
 from airflow import DAG
-from airflow_home.plugins.operators import (
+from tutorials.plugins.operators import (
     FactsCalculatorOperator,
     HasRowsOperator,
     S3ToRedshiftOperator
