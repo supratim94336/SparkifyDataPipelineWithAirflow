@@ -84,6 +84,50 @@ create a connection and a variable.
 to your master_password for your cluster
 5. Click save
 
+### About the data
+Song Data is collected from the Million Song Dataset   
+Check: http://millionsongdataset.com/
+
+Log Data is generated artificially  
+Check: https://github.com/Interana/eventsim
+
+### The schema we are going to design here
+![alt text](img/schema.png)
+Here you can see the Songplays table is actually the facts and others 
+connecting to it are dimensions. It's a simple star schema and the first
+ bold and colorful column name is the primary key for this table which 
+ are serving as foreign keys in Songplays table.
+ 
+### The dag we are going to design here
+![alt text](img/example-dag.png)
+
+### View and Analyze
+- The Tester.ipynb notebook is there to test your data with different
+queries (already some pre-written there)
+- The connection to the cluster is already written, you just have to
+    - fill up your cluster end point and iam role
+    - execute block by block to run the queries
+    
+### Example Queries
+For the most popular songs over the time (considering your schema name 
+is sparkify)
+```
+SELECT s.title, count(*) as count
+FROM sparkify.songplays sp
+INNER JOIN sparkify.songs s ON s.song_id = sp.song_id
+GROUP BY s.title
+ORDER BY count DESC, s.title ASC
+```
+For the most popular artists and their songs over the time (considering 
+your schema name is sparkify)
+```
+SELECT ar.name, s.title, count(*) as count
+FROM sparkify.songplays sp
+INNER JOIN sparkify.songs s ON s.song_id = sp.song_id
+INNER JOIN sparkify.artists ar ON ar.artist_id = sp.artist_id
+GROUP BY ar.name, s.title
+ORDER BY count DESC, ar.name, s.title ASC;
+
 #### Links for Airflow
 **Macro**  
 https://airflow.apache.org/macros.html
