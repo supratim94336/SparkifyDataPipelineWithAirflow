@@ -12,7 +12,6 @@ class StageToRedshiftOperator(BaseOperator):
                  table,
                  s3_bucket,
                  s3_key,
-                 create_sql,
                  sql_stmt,
                  json_format,
                  *args, **kwargs):
@@ -23,7 +22,6 @@ class StageToRedshiftOperator(BaseOperator):
         self.s3_bucket = s3_bucket
         self.s3_key = s3_key
         self.aws_credentials_id = aws_credentials_id,
-        self.create_sql = create_sql
         self.sql_stmt = sql_stmt
         self.json_format = json_format
 
