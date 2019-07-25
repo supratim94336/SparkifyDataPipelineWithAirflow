@@ -7,7 +7,7 @@ from airflow.operators import (StageToRedshiftOperator,
                                DataQualityOperator)
 from airflow.operators.subdag_operator import SubDagOperator
 from .subdag_for_dimensions import load_dimension_subdag
-from helpers import SqlQueries
+from helpers import SqlQueries, QualityChecks
 
 AWS_KEY = os.environ.get('AWS_KEY')
 AWS_SECRET = os.environ.get('AWS_SECRET')
@@ -81,7 +81,10 @@ load_songplays_table = LoadFactOperator(
 
 run_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
-    dag=dag
+    dag=dag,
+    redshift_conn_id="redshift",
+    sql_stmt=QualityChecks.check_row_count,
+    tables=['songs', 'time', 'users', 'artists', 'songplays'],
 )
 
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
