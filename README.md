@@ -75,6 +75,15 @@ create a connection and a variable.
 3. Set "Conn Id" to "aws_credentials", "Conn Type" to "Amazon Web Services"
 4. Set "Login" to your aws_access_key_id and "Password" to your aws_secret_key
 5. Click save
+6. If it doesn't work then in "Extra" field put:  
+{"region_name": "your_aws_region", "aws_access_key_id":"your_aws_access_key_id", "aws_secret_access_key": "your_aws_secret_access_key"} 
+7. These are all you can put:
+- aws_account_id: AWS account ID for the connection
+- aws_iam_role: AWS IAM role for the connection
+- external_id: AWS external ID for the connection
+- host: Endpoint URL for the connection
+- region_name: AWS region for the connection
+- role_arn: AWS role ARN for the connection
 
 **Redshift**
 1. Open Admin->Connections
