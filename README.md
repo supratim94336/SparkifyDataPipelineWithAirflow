@@ -136,10 +136,13 @@ INNER JOIN sparkify.songs s ON s.song_id = sp.song_id
 INNER JOIN sparkify.artists ar ON ar.artist_id = sp.artist_id
 GROUP BY ar.name, s.title
 ORDER BY count DESC, ar.name, s.title ASC;
+```
 
 #### Links for Airflow
-**Macro**  
+**Context Variables**  
 https://airflow.apache.org/macros.html
 
 **Hacks**  
-https://medium.com/datareply/airflow-lesser-known-tips-tricks-and-best-practises-cf4d4a90f8f
+https://medium.com/datareply/airflow-lesser-known-tips-tricks-and-best-practises-cf4d4a90f8f  
+https://medium.com/handy-tech/airflow-tips-tricks-and-pitfalls-9ba53fba14eb  
+https://www.astronomer.io/guides/dag-best-practices/
