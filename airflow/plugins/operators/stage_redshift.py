@@ -21,7 +21,7 @@ class StageToRedshiftOperator(BaseOperator):
         self.redshift_conn_id = redshift_conn_id
         self.s3_bucket = s3_bucket
         self.s3_key = s3_key
-        self.aws_credentials_id = aws_credentials_id,
+        self.aws_credentials_id = aws_credentials_id
         self.sql_stmt = sql_stmt
         self.json_format = json_format
 

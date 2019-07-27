@@ -21,13 +21,10 @@ class DataQualityOperator(BaseOperator):
 
     def execute(self, context):
         self.log.info(f""" Checking ETL result quality """)
-        redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
-        cur_table = ""
-        try:
-            for cur_table in self.tables:
+        redshift = PostgresHook(self.redshift_conn_id)
+        for cur_table in self.tables:
+            try:
                 if redshift.run(self.sql_stmt.format(cur_table)) == 1:
                     self.log.info(f""" Quality test passed for {cur_table} """)
-        except:
-            raise ValueError(f""" Quality check for {cur_table} """)
-
-
+            except:
+                raise ValueError(f""" Quality check for {cur_table} """)

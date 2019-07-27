@@ -15,23 +15,21 @@ class LoadDimensionOperator(BaseOperator):
                  *args, **kwargs):
 
         super(LoadDimensionOperator, self).__init__(*args, **kwargs)
-        self.redshift_conn_id = redshift_conn_id,
-        self.table = table,
-        self.sql_stmt = sql_stmt,
+        self.redshift_conn_id = redshift_conn_id
+        self.table = table
+        self.sql_stmt = sql_stmt
         self.mode = mode.lower()
 
     def execute(self, context):
         self.log.info(f""" Creating Postgres hook """)
-        redshift = PostgresHook(postgress_conn_id=self.redshift_conn_id)
+        redshift = PostgresHook(self.redshift_conn_id)
         self.log.info(f""" Loading Data into table {self.table} """)
         if self.mode == 'update':
-            formatted_sql = f""" INSERT INTO {self.table} 
-                                 VALUES({self.sql_stmt})"""
+            formatted_sql = f""" INSERT INTO {self.table} ({self.sql_stmt})"""
             redshift.run(formatted_sql)
         elif self.mode == "insert":
             formatted_sql = f"""TRUNCATE TABLE {self.table}; 
-                                INSERT INTO {self.table} 
-                                VALUES({self.sql_stmt})"""
+                                INSERT INTO {self.table} ({self.sql_stmt})"""
             redshift.run(formatted_sql)
 
 

@@ -7,7 +7,6 @@ ____  /| |_  /__  ___/_  /_ __  /_  __ \_ | /| / /
 ___  ___ |  / _  /   _  __/ _  / / /_/ /_ |/ |/ /
  _/_/  |_/_/  /_/    /_/    /_/  \____/____/|__/
 ```
-
  
 ### Installing and starting
 
@@ -76,7 +75,7 @@ create a connection and a variable.
 4. Set "Login" to your aws_access_key_id and "Password" to your aws_secret_key
 5. Click save
 6. If it doesn't work then in "Extra" field put:  
-{"region_name": "your_aws_region", "aws_access_key_id":"your_aws_access_key_id", "aws_secret_access_key": "your_aws_secret_access_key"} 
+{"region_name": "your_aws_region", "aws_access_key_id":"your_aws_access_key_id", "aws_secret_access_key": "your_aws_secret_access_key", "aws_iam_user": "your_created_iam_user"} 
 7. These are all you can put:
 - aws_account_id: AWS account ID for the connection
 - aws_iam_role: AWS IAM role for the connection
@@ -109,6 +108,39 @@ connecting to it are dimensions. It's a simple star schema and the first
  
 ### The dag we are going to design here
 ![alt text](img/example-dag.png)
+
+### Run the project
+- Create AWS Redshift Cluster (remember your username and password)
+- Set up airflow by setting the environment variable AIRFLOW_HOME as 
+'airflow' folder in this project
+- Run airflow with the commands mentioned above or the file 'airflow_start.sh'
+- Open your browser, go to localhost:8080 (or localhost:3000 if you plan to use the shell script)
+- Setup the AWS and Redshift connections for airflow hooks
+- Turn the dag 'udacity_dag' and rest works as usual
+- After you are done check the schema for your results
+
+#### Optional
+- If you haven't setup your AWS Redshift Cluster yet, then use the files
+ inside 'aws' folder 
+    - To create cluster and IAM role: Run the below code in terminal from 'aws' folder to create your Redshift database and a
+        iam_role in aws having read access to Amazon S3 and permissions 
+        attached to the created cluster
+        ```bash
+        $ python aws_operate.py --action start
+        ```
+        copy the DWH_ENDPOINT for <cluster_endpoint_address> and DWH_ROLE_ARN 
+        for <iam_role> from the print statements 
+    - To create Tables: Run the below code in terminal from project dir to create tables in your Redshift database
+        in aws 
+        ```bash
+        $ python create_table.py --host <cluster_endpoint_address>
+
+    - To Stop: Run the below code in terminal from 'aws' directory to destroy your Redshift database and
+        detach iam_role from the cluster 
+        ```bash
+        $ python aws_operate.py --action stop
+        ```
+
 
 ### View and Analyze
 - The Tester.ipynb notebook is there to test your data with different
@@ -146,3 +178,5 @@ https://airflow.apache.org/macros.html
 https://medium.com/datareply/airflow-lesser-known-tips-tricks-and-best-practises-cf4d4a90f8f  
 https://medium.com/handy-tech/airflow-tips-tricks-and-pitfalls-9ba53fba14eb  
 https://www.astronomer.io/guides/dag-best-practices/
+
+<img align="center" src="https://airflow.apache.org/_images/pin_large.png" width=108>
