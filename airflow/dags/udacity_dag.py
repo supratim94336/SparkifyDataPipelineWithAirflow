@@ -101,11 +101,11 @@ end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
 """
 An Overview of the implemented dag:
 
-       --> stage_events --> 
-     //                     \\
-start                          --> load_facts --> load_dimensions --> quality_check --> end
-     \\                     //
-       -->  stage_songs -->
+             --> stage_events --> 
+          //                      \\
+start -->                            --> load_facts --> load_dimensions --> quality_check --> end
+          \\                      //
+             -->  stage_songs -->
 """
 
 # sequence of airflow operations
