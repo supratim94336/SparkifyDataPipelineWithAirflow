@@ -1,6 +1,6 @@
-## Data Pipelines with Airflow, S3 and Redshift
 <img align="center" src="https://airflow.apache.org/_images/pin_large.png" width=108>
 
+## Data Pipelines with Airflow, S3 and Redshift
 ```
   ____________       _____________
  ____    |__( )_________  __/__  /________      __
