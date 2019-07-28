@@ -2,13 +2,7 @@
 
 
 ## Data Pipelines with Airflow, S3 and Redshift
-```
-  ____________       _____________
- ____    |__( )_________  __/__  /________      __
-____  /| |_  /__  ___/_  /_ __  /_  __ \_ | /| / /
-___  ___ |  / _  /   _  __/ _  / / /_/ /_ |/ |/ /
- _/_/  |_/_/  /_/    /_/    /_/  \____/____/|__/
-```
+
 ### Objective
 There are two bucket full of events and song metadata stored. We have to
  use Airflow and Amazon Web Services to transfer and stage the data into
@@ -186,3 +180,11 @@ https://airflow.apache.org/macros.html
 https://medium.com/datareply/airflow-lesser-known-tips-tricks-and-best-practises-cf4d4a90f8f  
 https://medium.com/handy-tech/airflow-tips-tricks-and-pitfalls-9ba53fba14eb  
 https://www.astronomer.io/guides/dag-best-practices/
+
+```
+                          ____________       _____________
+                         ____    |__( )_________  __/__  /________      __
+                        ____  /| |_  /__  ___/_  /_ __  /_  __ \_ | /| / /
+                        ___  ___ |  / _  /   _  __/ _  / / /_/ /_ |/ |/ /
+                         _/_/  |_/_/  /_/    /_/    /_/  \____/____/|__/
+```
