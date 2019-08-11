@@ -136,7 +136,13 @@ connecting to it are dimensions. It's a simple star schema and the first
         in aws 
         ```bash
         $ python create_table.py --host <cluster_endpoint_address>
-
+    - To start the DAG in Airflow: Run the below code in terminal
+        ```bash
+        $ airflow scheduler   
+        ```
+    - Go to Airflow WebUI, as per configuration, it will be in running 
+        state. Observe the progress until it is finished. You can always 
+        click on individual tasks to check its log.
     - To Stop: Run the below code in terminal from 'aws' directory to destroy your Redshift database and
         detach iam_role from the cluster 
         ```bash
